@@ -65,6 +65,8 @@ class Dial(Meter):
         )
         self.target_value = 0
         self.min = start
+        self.dead = False
+        self.ani_thread: thrd.Thread
 
     def animated_move(self):
         factor = 0.1  # Smoothing factor
@@ -72,8 +74,8 @@ class Dial(Meter):
         while abs(self.target_value - self.value) > threshold:
             move = (self.target_value - self.value) * factor
             new_value = self.value + move
-            self.set(round(new_value, 1))
             time.sleep(0.025)
+            self.set(round(new_value, 1))
         self.set(self.target_value)  # Ensure it ends exactly at the target
 
         ### FOR TESTING ###
@@ -85,4 +87,4 @@ class Dial(Meter):
 
     def move_to(self, target):
         self.target_value = target
-        thrd.Thread(target=self.animated_move).start()
+        self.ani_thread = thrd.Thread(target=self.animated_move).start()
