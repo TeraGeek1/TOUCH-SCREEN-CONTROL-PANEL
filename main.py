@@ -7,6 +7,7 @@ import threading as thrd
 
 window = Tk()
 window.title("Dial Demo")
+window.attributes("-fullscreen", True)
 window.minsize(800, 480)
 window.config(background="#202020")
 
