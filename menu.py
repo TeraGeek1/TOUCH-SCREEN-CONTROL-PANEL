@@ -37,17 +37,22 @@ class CustomMenu(ttk.Frame):
         self.place(relwidth=self.relwidth, relheight=self.relheight)
         self.menu_button.place_forget()
 
-        row_idx = 0
+        row_idx = 1
         for child in self.categories[cat_name]["children"]:
             child: Widget
             if type(child) != list:
-                child.grid(row=row_idx, column=0)
-                continue
-            column_idx = 0
-            for c in child:
-                c.grid(row=row_idx, column=column_idx)
-                column_idx += 1
+                child.pack(side="top")
+            else:
+                column_idx = 0
+                for c in child:
+                    c.grid(row=row_idx, column=column_idx)
+                    column_idx += 1
             row_idx += 1
+        self.rowconfigure(0, weight=10)
+        for row in range(row_idx):
+            if row == 0:
+                continue
+            self.rowconfigure(row, weight=1)
 
     def show_menu(self):
         self.place(relwidth=self.relwidth, relheight=self.relheight)
