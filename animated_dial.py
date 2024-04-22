@@ -71,20 +71,14 @@ class Dial(Meter):
     def animated_move(self):
         factor = 0.1  # Smoothing factor
         threshold = 0.5  # Minimum movement threshold to stop animation
-        while abs(self.target_value - self.value) > threshold:
+        if abs(self.target_value - self.value) > threshold:
             move = (self.target_value - self.value) * factor
             new_value = self.value + move
-            time.sleep(0.025)
             self.set(round(new_value, 1))
+            self.master.after(25, self.animated_move)
+            return
         self.set(self.target_value)  # Ensure it ends exactly at the target
-
-        ### FOR TESTING ###
-        print("ENDED LOOP")
-        new_target = random.randint(self.min, self.max)
-        print(f"new_target: {new_target}")
-        self.move_to(new_target)
-        ### FOR TESTING ###
 
     def move_to(self, target):
         self.target_value = target
-        self.ani_thread = thrd.Thread(target=self.animated_move).start()
+        self.animated_move()

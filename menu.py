@@ -36,25 +36,21 @@ class CustomMenu(ttk.Frame):
         self.hide_menu()
         self.place(relwidth=self.relwidth, relheight=self.relheight)
         self.menu_button.place_forget()
+        self.close_menu_button.place(relx=0.01, rely=0.01)
 
-        row_idx = 1
         for child in self.categories[cat_name]["children"]:
             child: Widget
             if type(child) != list:
-                child.pack(side="top")
+                child.grid()
             else:
-                column_idx = 0
-                for c in child:
-                    c.grid(row=row_idx, column=column_idx)
-                    column_idx += 1
-            row_idx += 1
-        self.rowconfigure(0, weight=10)
-        for row in range(row_idx):
-            if row == 0:
-                continue
-            self.rowconfigure(row, weight=1)
+                child[0].place(relx=child[1], rely=child[2])
 
     def show_menu(self):
+        for child in self.children.items():
+            child: Widget = child[1]
+            if child.winfo_manager() == "grid":
+                child.grid_forget()
+
         self.place(relwidth=self.relwidth, relheight=self.relheight)
 
         y_pos = 0.08
@@ -75,10 +71,9 @@ class CustomMenu(ttk.Frame):
             self.categories[category]["parent"].place_forget()
             for child in self.categories[category]["children"]:
                 if type(child) != list:
-                    child.place_forget()
+                    child.grid_forget()
                 else:
-                    for c in child:
-                        c.place_forget()
+                    child[0].place_forget()
 
     def exit_app(self):
         sys.exit()
