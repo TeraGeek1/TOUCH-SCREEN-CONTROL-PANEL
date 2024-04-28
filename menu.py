@@ -60,7 +60,7 @@ class CustomMenu(ttk.Frame):
 
         self.menu_button.place_forget()
         self.close_menu_button.place(relx=0.01, rely=0.01)
-        self.exit_button.place(relx=0.01, rely=0.95)
+        self.exit_button.place(relx=0.01, rely=0.92)
 
     def hide_menu(self):
         self.place_forget()
